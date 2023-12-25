@@ -16,4 +16,5 @@ public interface Constants {
     int MAX_USER_MESSAGE_SIZE = 100;
     String MAX_USER_MSG_LEN_EXCEEDED = " Max length allowed bytes"+MAX_USER_MESSAGE_SIZE;
     String GENERIC_EXCEPTION_MSG = " Some Exception, We are working on it ";
+    int MESSAGE_BULK_SIZE = 100;
 }

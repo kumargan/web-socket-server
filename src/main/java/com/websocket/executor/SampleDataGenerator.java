@@ -31,8 +31,8 @@ public class SampleDataGenerator implements Runnable{
         log.info(" SampleDataGenerator thread started ");
         while(true) {
             try {
-                try{Thread.sleep(2000);}catch(Exception e1){/* ignore thread interruption */}
-
+                try{Thread.sleep(500);}catch(Exception e1){/* ignore thread interruption */}
+                log.info(" SampleDataGenerator generating data ");
                 if (!CollectionUtils.isEmpty(userSessionCache.getUserSessionMap())) {
                     //Get all sessions  to avoid unintended starvation of any user session
                     Set<String> sessionKeySet = userSessionCache.getUserSessionMap().keySet();

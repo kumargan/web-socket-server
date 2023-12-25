@@ -2,6 +2,7 @@ package com.websocket.executor;
 
 import com.websocket.beans.UserSessionObject;
 import com.websocket.beans.binary.ByteArrayWrapper;
+import com.websocket.constants.Constants;
 import com.websocket.utils.ByteConversionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
@@ -29,6 +30,7 @@ public class PublishTask implements Callable<Integer> {
         try {
             for( UserSessionObject userSession : userSessions){
                 try{
+                    log.info("writing to user session, queue size {} ",userSession.getQueue().size());
                     writeFromByteQueue(userSession.getQueue(),userSession.getSession());
                     writeFromStringQueue(userSession.getStringQueue(),userSession.getSession());
                 }catch(Exception e){
@@ -36,15 +38,15 @@ public class PublishTask implements Callable<Integer> {
                 }
             }
         }catch(Exception e1){
-                log.error(" Exception in loop, fix the code {} ",e1);
-            }
+            log.error(" Exception in loop, fix the code {} ",e1);
+        }
         return packetSent;
     }
 
     private void writeFromByteQueue(Queue<ByteArrayWrapper> messageQueue, Session session){
 
         //select only 10 packets from user session queue
-        int currentQueueSize = Math.min(messageQueue.size(),10);
+        int currentQueueSize = Math.min(messageQueue.size(), Constants.MESSAGE_BULK_SIZE);
         List<ByteArrayWrapper> userPacketBytes = new ArrayList<>(currentQueueSize);
         //write 10 packets at a time
         while(currentQueueSize != 0){
@@ -65,7 +67,7 @@ public class PublishTask implements Callable<Integer> {
 
     private void writeFromStringQueue(Queue<String> messageQueue, Session session){
         //select only 10 packets from user session queue
-        int currentQueueSize = Math.min(messageQueue.size(),10);
+        int currentQueueSize = Math.min(messageQueue.size(),Constants.MESSAGE_BULK_SIZE);
 
         //write 10 packets at a time
         while(currentQueueSize != 0){

@@ -44,7 +44,7 @@ public class WsConnectionFilter implements Filter {
 
             ResponseData data = new ResponseData(new MetaResponse(" too many connections, please retry"));
             httpResponse.setContentType("application/json");
-            httpResponse.setStatus(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED.value());
+            httpResponse.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
             httpResponse.getWriter().write(CommonUtils.getString(data));
             return;
         }
